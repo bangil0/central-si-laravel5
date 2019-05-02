@@ -18,7 +18,7 @@
 
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#">
-                    <i class="nav-icon icon-people"></i> Pengelolaan Sivitas</a>
+                    <i class="nav-icon icon-people"></i> Pengelolaan Civitas</a>
                 <ul class="nav-dropdown-items">
 
                     {{-- Menu Dosen--}}
