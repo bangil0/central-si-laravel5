@@ -43,9 +43,9 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th class="text-center">NIM</th>
-                            <th class="text-center">Nama</th>
-                            <th class="text-center">Judul TA</th>
+                            <th>NIM</th>
+                            <th>Nama</th>
+                            <th>Judul TA</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         </thead>
