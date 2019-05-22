@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use\App\TaPembimbing;
+use App\TaPembimbing;
+use App\TugasAkhir;
 
 class PembimbingTAController extends Controller
 {
@@ -14,7 +15,9 @@ class PembimbingTAController extends Controller
      */
     public function index()
     {
-        $pembimbingTAs = TaPembimbing::paginate(25);
+        $pembimbingTAs = TugasAkhir::
+                        join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
+                        ->paginate(25);
         return view('backend.pembimbingTA.index', compact('pembimbingTAs'));
     }
 

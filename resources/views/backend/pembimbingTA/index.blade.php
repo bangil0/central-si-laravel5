@@ -19,7 +19,7 @@
 
                 {{-- CARD HEADER--}}
                 <div class="card-header">
-                    <strong>List Dosen</strong>
+                    <strong>List Mahasiswa</strong>
                 </div>
 
                 {{-- CARD BODY--}}
@@ -43,22 +43,20 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
+                            <th class="text-center">NIM</th>
                             <th class="text-center">Nama</th>
-                            <th class="text-center">NIP</th>
-                            <th class="text-center">NIK</th>
+                            <th class="text-center">Judul TA</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($pembimbingTAs as $pembimbingTA)
                             <tr>
+                                <td>{{ $pembimbingTA->nim }}</td>
                                 <td>{{ $pembimbingTA->nama }}</td>
-                                <td class="text-center">{{ $pembimbingTA->nip }}</td>
-                                <td class="text-center">{{ $pembimbingTA->nik }}</td>
+                                <td>{{ $pembimbingTA->judul }}</td>
                                 <td class="text-center">
                                     {!! cui_btn_view(route('admin.pembimbingTA.show', [$pembimbingTA->id])) !!}
-                                    {!! cui_btn_edit(route('admin.pembimbingTA.edit', [$pembimbingTA->id])) !!}
-                                    {!! cui_btn_delete(route('admin.pembimbingTA.destroy', [$pembimbingTA->id]), "Anda yakin akan menghapus data pembimbingTA ini?") !!}
                                 </td>
                             </tr>
                         @endforeach
