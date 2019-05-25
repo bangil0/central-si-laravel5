@@ -64,7 +64,7 @@ class PembimbingTAController extends Controller
             // $id = DB::getPdo()->lastInsertId();
             // dd($id);
             $id =TaPembimbing::all()->last()->id;
-            return redirect()->route('admin.pembimbingTA.show', [$id]);
+            return redirect()->route('admin.pembimbingTA.show', [$pembimbing->tugas_akhir_id]);
         
     }
 
@@ -78,7 +78,8 @@ class PembimbingTAController extends Controller
     {
         $pembimbingTAs = DB::table('ta_pembimbing')
                         ->join('dosen', 'ta_pembimbing.dosen_id', '=', 'dosen.id')
-                        ->where('ta_pembimbing.id', '=', $id)
+                        ->join('tugas_akhir', 'tugas_akhir.id', '=', 'ta_pembimbing.tugas_akhir_id')
+                        ->where('tugas_akhir.id', '=', $id)
                         ->paginate(25);
         return view('backend.pembimbingTA.show', compact('pembimbingTAs', 'id'));
     }
