@@ -8,9 +8,6 @@
     ]) !!}
 @endsection
 
-@section('toolbar')
-    {!! cui_toolbar_btn(route('admin.pembimbingTA.create'), 'icon-plus', 'Tambah PembimbingTA') !!}
-@endsection
 
 @section('content')
     <div class="row justify-content-center">
@@ -25,13 +22,8 @@
                 {{-- CARD BODY--}}
                 <div class="card-body">
 
-                    <div class="row justify-content-end">
+                <div class="row justify-content-end">
                         <div class="col-md-6 text-right">
-                            <form method="post" action="{{ route('admin.dosencari.show') }}" class="form-inline">
-                                {{ csrf_field() }}
-                                <input type="text" name="keyword" class="form-control" value="@if(isset($keyword)) {{ $keyword }} @endif" placeholder="Masukkan Keyword" />
-                                <input type="submit" name="submit" class="btn btn-primary" value="Cari" />
-                            </form>
                         </div>
                         <div class="col-md-6 justify-content-end">
                             <div class="row justify-content-end">
@@ -49,14 +41,13 @@
                             <th class="text-center">Aksi</th>
                         </tr>
                         </thead>
-                        <tbody>
                         @foreach($pembimbingTAs as $pembimbingTA)
                             <tr>
                                 <td>{{ $pembimbingTA->nim }}</td>
                                 <td>{{ $pembimbingTA->nama }}</td>
                                 <td>{{ $pembimbingTA->judul }}</td>
                                 <td class="text-center">
-                                    {!! cui_btn_view(route('admin.pembimbingTA.show', [$pembimbingTA->id])) !!}
+                                {!! cui_btn_view(route('admin.pembimbingTA.destroy', [$pembimbingTA->id])) !!}
                                 </td>
                             </tr>
                         @endforeach

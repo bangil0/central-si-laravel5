@@ -47,12 +47,12 @@ Route::middleware(['auth'])->group( function(){
     Route::get('/admin/dashboard', 'DashboardController@index')->name('admin.dashboard');
 
     /** Routing Pengelolaan Dosen */
-    Route::post('/admin/pembimbingTA/cari', 'PembimbingTACariController@show')->name('admin.pembimbingTAcari.show'); //routing pencarian dosen
+    // Route::post('/admin/pembimbingTA/cari', 'PembimbingTACariController@show')->name('admin.pembimbingTAcari.show'); //routing pencarian dosen
     Route::get('/admin/pembimbingTA/cari', 'PembimbingTAController@index')->name('admin.pembimbingTAcari.index'); //routing pencarian dosen
 
     Route::get('/admin/pembimbingTA', 'PembimbingTAController@index')->name('admin.pembimbingTA.index');  //routing lihat daftar dosen
     Route::post('/admin/pembimbingTA', 'PembimbingTAController@store')->name('admin.pembimbingTA.store'); //routing simpan data dosen baru
-    Route::get('/admin/pembimbingTA/create', 'PembimbingTAController@create')->name('admin.pembimbingTA.create'); //routing tampilkan form data dosen baru
+    Route::get('/admin/pembimbingTA/create/{id}', 'PembimbingTAController@create')->name('admin.pembimbingTA.create'); //routing tampilkan form data dosen baru
     Route::delete('/admin/pembimbingTA/{pembimbingTA}', 'PembimbingTAController@destroy')->name('admin.pembimbingTA.destroy'); //routing hapus data dosen baru
     Route::patch('/admin/pembimbingTA/{pembimbingTA}', 'PembimbingTAController@update')->name('admin.pembimbingTA.update'); //routing simpan perubahan data dosen
     Route::get('/admin/pembimbingTA/{pembimbingTA}', 'PembimbingTAController@show')->name('admin.pembimbingTA.show'); //routing tampilkan detail dosen

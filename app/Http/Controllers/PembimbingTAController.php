@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\TaPembimbing;
 use App\TugasAkhir;
+use App\Dosen;
+use DB;
 
 class PembimbingTAController extends Controller
 {
+    public $validation_rules = [
+        'dosen_id' => 'required|nama',
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -26,9 +31,10 @@ class PembimbingTAController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $pembimbing = Dosen::pluck('nama', 'id');
+        return view('backend.pembimbingTA.create', compact('pembimbing', 'id'));
     }
 
     /**
@@ -39,7 +45,27 @@ class PembimbingTAController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+       $request->validate([
+            'dosen_id' => 'required'
+       ]);
+    //    $data = $request->all();
+    //    dd($data);
+            // $insert = TaPembimbing::create($data);
+            // dd($insert);
+            $pembimbing = new TaPembimbing();
+            // dd($pembimbing);
+            $pembimbing->dosen_id = $request->input('dosen_id');
+            $pembimbing->tugas_akhir_id = $request->input('tugas_akhir_id');
+            $pembimbing->jabatan = $request->input('jabatan');
+            $pembimbing->status = $request->input('status');
+
+            $pembimbing->save();
+            // $id = DB::getPdo()->lastInsertId();
+            // dd($id);
+            $id =TaPembimbing::all()->last()->id;
+            return redirect()->route('admin.pembimbingTA.show', [$id]);
+        
     }
 
     /**
@@ -50,7 +76,11 @@ class PembimbingTAController extends Controller
      */
     public function show($id)
     {
-        //
+        $pembimbingTAs = DB::table('ta_pembimbing')
+                        ->join('dosen', 'ta_pembimbing.dosen_id', '=', 'dosen.id')
+                        ->where('ta_pembimbing.id', '=', $id)
+                        ->paginate(25);
+        return view('backend.pembimbingTA.show', compact('pembimbingTAs', 'id'));
     }
 
     /**
