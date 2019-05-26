@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group( function(){
     Route::get('/admin/dashboard', 'DashboardController@index')->name('admin.dashboard');
 
     /** Routing Pengelolaan Dosen */
-    // Route::post('/admin/pembimbingTA/cari', 'PembimbingTACariController@show')->name('admin.pembimbingTAcari.show'); //routing pencarian dosen
+    Route::post('/admin/pembimbingTA/cari', 'PembimbingTACariController@show')->name('admin.pembimbingTAcari.show'); //routing pencarian dosen
     Route::get('/admin/pembimbingTA/cari', 'PembimbingTAController@index')->name('admin.pembimbingTAcari.index'); //routing pencarian dosen
 
     Route::get('/admin/pembimbingTA', 'PembimbingTAController@index')->name('admin.pembimbingTA.index');  //routing lihat daftar dosen

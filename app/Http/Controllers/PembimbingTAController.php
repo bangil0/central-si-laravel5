@@ -45,16 +45,10 @@ class PembimbingTAController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
        $request->validate([
             'dosen_id' => 'required'
        ]);
-    //    $data = $request->all();
-    //    dd($data);
-            // $insert = TaPembimbing::create($data);
-            // dd($insert);
             $pembimbing = new TaPembimbing();
-            // dd($pembimbing);
             $pembimbing->dosen_id = $request->input('dosen_id');
             $pembimbing->tugas_akhir_id = $request->input('tugas_akhir_id');
             $pembimbing->jabatan = $request->input('jabatan');
@@ -80,7 +74,9 @@ class PembimbingTAController extends Controller
                         ->join('dosen', 'ta_pembimbing.dosen_id', '=', 'dosen.id')
                         ->join('tugas_akhir', 'tugas_akhir.id', '=', 'ta_pembimbing.tugas_akhir_id')
                         ->where('tugas_akhir.id', '=', $id)
+                        ->select('ta_pembimbing.id', 'dosen.nama', 'dosen.nip')
                         ->paginate(25);
+        // dd($pembimbingTAs);
         return view('backend.pembimbingTA.show', compact('pembimbingTAs', 'id'));
     }
 
@@ -115,6 +111,10 @@ class PembimbingTAController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pembimbing = TaPembimbing::findOrFail($id);
+        $pembimbing->destroy($id);
+
+        session()->flash('flash_success', 'Berhasil membatalkan pembimbing ');
+        return redirect()->route('admin.pembimbingTA.index');
     }
 }

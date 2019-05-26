@@ -31,5 +31,6 @@ class Dosen extends Model
         return $this->belongsToMany(RefFungsional::class, DosenFungsional::class, 'dosen_id', 'fungsional_id');
     }
 
+
     // Tambahkan Kode yang diperlukan mulai dari sini
 }
