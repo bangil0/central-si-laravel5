@@ -41,6 +41,17 @@ Route::middleware(['auth'])->group( function(){
     Route::get('/admin/mahasiswa/{mahasiswa}/edit', 'MahasiswaController@edit')->name('admin.mahasiswa.edit');  //routing tampilkan form edit mahasiswa
 
     /** Routing untuk tugas mulai dari sini */
+    /** Pengelolaan Sempro */
+   
+    Route::get('/admin/sempro', 'SemproController@index')->name('admin.Sempro.index');  
+    Route::get('/admin/sempro', 'SemproController@index')->name('admin.sempro.index');  
+    Route::post('/admin/sempro', 'SemproController@store')->name('admin.sempro.store'); 
+    Route::get('/admin/sempro/create', 'SemproController@create')->name('admin.sempro.create'); 
+    Route::delete('/admin/sempro/{mahasiswa}', 'SemproController@destroy')->name('admin.sempro.destroy'); 
+    Route::patch('/admin/sempro/{mahasiswa}', 'SemproController@update')->name('admin.sempro.update');
+    Route::get('/admin/sempro/{mahasiswa}', 'SemproController@show')->name('admin.sempro.show'); 
+    Route::get('/admin/sempro/{mahasiswa}/edit', 'SemproController@edit')->name('admin.sempro.edit');        
+
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
     Route::post('pembimbing/submit', 'PembimbingSubmissionController@store')->name('admin.pembimbing.store');
 
