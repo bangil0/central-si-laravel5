@@ -163,11 +163,14 @@ class SemhasController extends Controller
                 ->join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
            
                 ->select('ta_sempro.id','mahasiswa.nama','ta_semhas.semhas_at','ta_semhas.semhas_time','ta_semhas.status','ta_semhas.rekomendasi','ta_semhas.sidang_deadline_at','ta_semhas.file_ba_seminar','ta_semhas.file_laporan_ta','ruangan.nama AS ruangan_nama','rekomendasi', DB::raw('(CASE WHEN rekomendasi = 1 THEN '. "'Mengulang Seminar'" .'WHEN rekomendasi = 2 THEN '. "'Lanjut Sidang dengan Revisi'".'WHEN rekomendasi = 3 THEN '."'Lanjut Sidang Tanpa Revisi'".'END) AS rekomendasi_semhas'), 'status', DB::raw('(CASE WHEN status = 1 THEN '. "'Sudah Terlaksana'" .'END) AS status_semhas'))
+
                 ->where('ta_semhas.id','=',$id)
                 ->get();
                   
+
          $semhass = $semhass[0];
   
+
         return view('backend.semhas.show', compact('semhass','ruangan'));
     }
     public function destroy($id)
