@@ -64,6 +64,9 @@
                 </ul>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.sempro.index') }}">
+                    <i class="nav-icon fas fa-book"></i> Pengelolaan Sempro</a>
         </ul>
     </nav>
 
