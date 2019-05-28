@@ -11,7 +11,7 @@
 |
 */
 
-Route::middleware(['auth'])->group( function(){
+Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/admin/home', 'HomeController@index')->name('admin.home');
     Route::get('/admin/dashboard', 'DashboardController@index')->name('admin.dashboard');
@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group( function(){
     Route::get('/admin/mahasiswa/{mahasiswa}/edit', 'MahasiswaController@edit')->name('admin.mahasiswa.edit');  //routing tampilkan form edit mahasiswa
 
     /** Routing untuk tugas mulai dari sini */
+
     /** Pengelolaan Sempro */
 
     Route::get('/admin/sempro', 'SemproController@index')->name('admin.sempro.index');  //routing lihat daftar mahasiswa
@@ -57,6 +58,7 @@ Route::middleware(['auth'])->group( function(){
 
  
 
+
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
     Route::post('pembimbing/submit', 'PembimbingSubmissionController@store')->name('admin.pembimbing.store');
 
@@ -66,7 +68,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function(){
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     //Laravel Permission spatie/permissions
     Route::resource('permissions', 'Backend\PermissionsController');
     Route::post('permissions_mass_destroy', ['uses' => 'Backend\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
