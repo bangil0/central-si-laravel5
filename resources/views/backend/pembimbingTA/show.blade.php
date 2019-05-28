@@ -25,6 +25,21 @@
                 {{-- CARD BODY--}}
                 <div class="card-body">
 
+                <div class="form-group">
+                <label for="nim">NIM</label>
+                {{Form::text('nim', $ta->nim, ['class' => 'form-control-plaintext', 'id' => 'nim', 'readonly' => 'readonly'])}}
+                </div>
+
+                <div class="form-group">
+                <label for="nama">Nama</label>
+                {{Form::text('nama', $ta->nama, ['class' => 'form-control-plaintext', 'id' => 'nama', 'readonly' => 'readonly'])}}
+                </div>
+
+                <div class="form-group">
+                <label for="judul">Judul TA</label>
+                {{Form::text('judul', $ta->judul, ['class' => 'form-control-plaintext', 'id' => 'judul', 'readonly' => 'readonly'])}}
+                </div>
+
                 <table class="table table-striped">
                         <thead>
                         <tr>

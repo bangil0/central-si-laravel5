@@ -47,7 +47,7 @@
                                 <td>{{ $pembimbingTA->nama }}</td>
                                 <td>{{ $pembimbingTA->judul }}</td>
                                 <td class="text-center">
-                                {!! cui_btn_view(route('admin.pembimbingTA.destroy', [$pembimbingTA->id])) !!}
+                                {!! cui_btn_view(route('admin.pembimbingTA.destroy', [$pembimbingTA->id]) ) !!}
                                 </td>
                             </tr>
                         @endforeach
@@ -76,3 +76,4 @@
     </div><!--row-->
 
 @endsection
+ 
