@@ -21,5 +21,6 @@ class Mahasiswa extends Model
        return optional($this->user)->email;
     }
 
+
     // Tambahkan Kode yang diperlukan dibawah ini
 }

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group( function(){
 
     /** Routing untuk tugas mulai dari sini */
     /** Pengelolaan Sempro */
+
     Route::get('/admin/sempro', 'SemproController@index')->name('admin.sempro.index');  //routing lihat daftar mahasiswa
     Route::post('/admin/sempro', 'SemproController@store')->name('admin.sempro.store'); //routing simpan data mahasiswa baru
     Route::get('/admin/sempro/create', 'SemproController@create')->name('admin.sempro.create'); //routing tampilkan form data mahasiswa baru
@@ -55,6 +56,7 @@ Route::middleware(['auth'])->group( function(){
     
 
  
+
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
     Route::post('pembimbing/submit', 'PembimbingSubmissionController@store')->name('admin.pembimbing.store');
 

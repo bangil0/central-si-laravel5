@@ -14,4 +14,10 @@ class TaSempro extends Model
     ];
 
     // Tambahkan Kode yang diperlukan dibawah ini
+    public function semhas_deadline_at()
+    {
+    	return $this->hasMany(TaSempro::class);
+    }
+
+
 }
