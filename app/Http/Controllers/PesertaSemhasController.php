@@ -25,7 +25,17 @@ class PesertaSemhasController extends Controller
                    ->select('ta_peserta_semhas.id','mahasiswa.nim','mahasiswa.nama','ta_peserta_semhas.mahasiswa_id')
                    ->where('ta_semhas.id','=',$id)
                    ->paginate(25);
-        return view('backend.pesertasemhas.index', compact('semhass', 'id'));
+        $mhs =  DB::table('ta_semhas')
+                ->join('ruangan', 'ta_semhas.ruangan_id', '=', 'ruangan.id')
+                ->join('ta_sempro', 'ta_semhas.ta_sempro_id', '=' , 'ta_sempro.id')
+                ->join('tugas_akhir','ta_sempro.tugas_akhir_id', '=', 'tugas_akhir.id')
+                ->join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
+                ->select('mahasiswa.nama')
+                ->where('ta_semhas.id','=',$id)
+                ->get()[0]->nama;
+              
+                   // dd($mhs);
+        return view('backend.pesertasemhas.index', compact('semhass', 'id', 'mhs'));
     }
     public function create($id)
     {
