@@ -15,8 +15,9 @@
 
 <div class="form-group">
     <label for="proposal_status">Status Proposal</label>
-    {{ Form::text('proposal_status', null, ['class' => 'form-control', 'id' => 'proposal_status', 'placeholder' => 'Status Proposal']) }}
+    {{ Form::SELECT('proposal_status', ['1'=>'1', '2'=>'2',], null, ['class' => 'form-control', 'id' => 'proposal_status', 'placeholder' => 'Status Proposal']) }}
 </div>
+
 
 <div class="form-group">
     <label for="file_proposal">File Proposal (PDF)</label>
