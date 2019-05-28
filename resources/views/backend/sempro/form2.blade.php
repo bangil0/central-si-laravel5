@@ -1,7 +1,7 @@
-<div class="form-group">
-    <label for="tugas_akhir_id">Nama Mahasiswa</label>
-    {{ Form::select('tugas_akhir_id', $tugas_akhir,null, ['class' => 'form-control', 'id' => 'tugas_akhir_id', 'placeholder' => 'Nama Mahasiswa']) }}
-</div>
+ <div class="form-group">
+ <label for="nama">Nama Mahasiswa</label>
+ {{ Form::text('nama',null, ['class' => 'form-control', 'id' => 'nama', 'placeholder' => 'Nama Mahasiswa','readonly' => 'readonly']) }}
+ </div>
 
 <div class="form-group">
     <label for="semhas_at">Tanggal Seminar Proposal</label>
@@ -15,10 +15,8 @@
 
 <div class="form-group">
     <label for="proposal_status">Status Proposal</label>
-
-    {{ Form::SELECT('proposal_status', ['1'=>'1', '2'=>'2',], null, ['class' => 'form-control', 'id' => 'proposal_status', 'placeholder' => 'Status Proposal']) }}
+    {{ Form::text('proposal_status', null, ['class' => 'form-control', 'id' => 'proposal_status', 'placeholder' => 'Status Proposal']) }}
 </div>
-
 
 
 <div class="form-group">
