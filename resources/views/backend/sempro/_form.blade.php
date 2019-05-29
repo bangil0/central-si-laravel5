@@ -15,8 +15,10 @@
 
 <div class="form-group">
     <label for="proposal_status">Status Proposal</label>
+
     {{ Form::SELECT('proposal_status', ['1'=>'SETUJU', '2'=>'TIDAK SETUJU',], null, ['class' => 'form-control', 'id' => 'proposal_status', 'placeholder' => 'Status Proposal']) }}
 </div>
+
 
 
 <div class="form-group">
