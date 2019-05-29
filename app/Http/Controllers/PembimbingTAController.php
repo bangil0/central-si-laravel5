@@ -22,9 +22,15 @@ class PembimbingTAController extends Controller
     {
         $pembimbingTAs = TugasAkhir::
                         join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
-                        ->select('tugas_akhir.id','mahasiswa.nama','tugas_akhir.judul','mahasiswa.nim')
+                        ->select('tugas_akhir.id', 'mahasiswa.nama','tugas_akhir.judul','mahasiswa.nim')
                         ->paginate(25);
-        return view('backend.pembimbingTA.index', compact('pembimbingTAs'));
+        $jumlah = TaPembimbing::select('tugas_akhir_id', DB::raw('
+                        sum(ta_pembimbing.status) as jumlah
+                        '))
+                        ->rightJoin('tugas_akhir', 'tugas_akhir.id', '=', 'ta_pembimbing.tugas_akhir_id')
+                        ->groupBy('tugas_akhir.id')
+                        ->get();
+        return view('backend.pembimbingTA.index', compact('pembimbingTAs', 'jumlah'));
     }
 
     /**
@@ -56,8 +62,8 @@ class PembimbingTAController extends Controller
             $pembimbing->status = $request->input('status');
 
             $pembimbing->save();
-            // $id = DB::getPdo()->lastInsertId();
-            // dd($id);
+            session() ->flash('flash_success', 'Berhasil menambahkan pembimbing');
+        
             $id =TaPembimbing::all()->last()->id;
             return redirect()->route('admin.pembimbingTA.show', [$pembimbing->tugas_akhir_id]);
         
@@ -75,15 +81,16 @@ class PembimbingTAController extends Controller
                         ->join('dosen', 'ta_pembimbing.dosen_id', '=', 'dosen.id')
                         ->join('tugas_akhir', 'tugas_akhir.id', '=', 'ta_pembimbing.tugas_akhir_id')
                         ->where('tugas_akhir.id', '=', $id)
-                        ->select('ta_pembimbing.id', 'dosen.nama', 'dosen.nip')
+                        ->select('ta_pembimbing.id', 'dosen.nama', 'dosen.nip','ta_pembimbing.jabatan','ta_pembimbing.status')
                         ->paginate(25);
+    
         $ta =DB :: table('tugas_akhir')
                 ->join('mahasiswa','mahasiswa.id', '=', 'tugas_akhir.mahasiswa_id')
                 ->select('mahasiswa.nama','mahasiswa.nim','tugas_akhir.judul')
                 ->where('tugas_akhir.id','=',$id)
                 ->get()[0];
-        // dd($pembimbingTAs);
-        return view('backend.pembimbingTA.show', compact('pembimbingTAs', 'id', 'ta'));
+
+        return view('backend.pembimbingTA.show', compact('pembimbingTAs', 'id', 'ta' ));
     }
 
     /**
@@ -92,35 +99,14 @@ class PembimbingTAController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
-    {
+    {   
         $pembimbing = TaPembimbing::findOrFail($id);
-        $pembimbing->destroy ($id);
-
+        $data['status'] = 0;
+        $pembimbing->update($data);
         session()->flash('flash_success', 'Berhasil membatalkan pembimbing ');
+
         return redirect()->route('admin.pembimbingTA.index');
     }
 }

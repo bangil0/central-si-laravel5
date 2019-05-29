@@ -26,11 +26,5 @@ class Dosen extends Model
         return $this->belongsToMany(Publikasi::class, PublikasiDosen::class);
     }
 
-    public function fungsionals()
-    {
-        return $this->belongsToMany(RefFungsional::class, DosenFungsional::class, 'dosen_id', 'fungsional_id');
-    }
-
-
     // Tambahkan Kode yang diperlukan mulai dari sini
 }

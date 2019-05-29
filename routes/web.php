@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group( function(){
     Route::get('/admin/pembimbingTA/create/{id}', 'PembimbingTAController@create')->name('admin.pembimbingTA.create'); //routing tampilkan form data dosen baru
     Route::delete('/admin/pembimbingTA/{pembimbingTA}', 'PembimbingTAController@destroy')->name('admin.pembimbingTA.destroy'); //routing hapus data dosen baru
     Route::get('/admin/pembimbingTA/{pembimbingTA}', 'PembimbingTAController@show')->name('admin.pembimbingTA.show'); //routing tampilkan detail dosen
+    Route::patch('/admin/pembimbingTA/{pembimbingTA}', 'PembimbingTAController@update')->name('admin.pembimbingTA.update'); //routing hapus data dosen baru
     
 
 });

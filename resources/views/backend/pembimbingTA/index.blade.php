@@ -31,21 +31,28 @@
                             </div>
                         </div>
                     </div>
-
                     <table class="table table-striped">
                         <thead>
                         <tr>
                             <th>NIM</th>
                             <th>Nama</th>
                             <th>Judul TA</th>
+                            <th>Jumlah Pembimbing</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         </thead>
+                        <?php $i=0; ?>
                         @foreach($pembimbingTAs as $pembimbingTA)
                             <tr>
                                 <td>{{ $pembimbingTA->nim }}</td>
                                 <td>{{ $pembimbingTA->nama }}</td>
                                 <td>{{ $pembimbingTA->judul }}</td>
+                                @if($jumlah[$i]->jumlah == null)
+                                <td>0</td>
+                                @else
+                                <td>{{ $jumlah[$i]->jumlah }}</td>
+                                @endif
+                                <?php $i++; ?>
                                 <td class="text-center">
                                 {!! cui_btn_view(route('admin.pembimbingTA.destroy', [$pembimbingTA->id]) ) !!}
                                 </td>

@@ -10,5 +10,4 @@ class TaPembimbing extends Model
     protected $guarded = [];
 
     // Tambahkan Kode yang diperlukan dibawah ini
-
 }

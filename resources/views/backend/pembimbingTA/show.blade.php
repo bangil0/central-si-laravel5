@@ -45,6 +45,8 @@
                         <tr>
                             <th>Nama</th>
                             <th>NIP</th>
+                            <th>Jabatan</th>
+                            <th>Status</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         </thead>
@@ -52,10 +54,24 @@
                             <tr>
                                 <td>{{ $pembimbingTA->nama }}</td>
                                 <td>{{ $pembimbingTA->nip }}</td>
+                                <td>
+                                @if($pembimbingTA->jabatan=="1")
+                                    <p1>Pembimbing Utama</p1>
+                                @else
+                                    <p1>Pembimbing Pendamping</p1>
+                                @endif
+                                </td>
+                                <td>@if($pembimbingTA->status=="1")
+                                    <p1>Diterima</p1>
+                                @else
+                                    <p1>Batal</p1>
+                                @endif
                                 <td class="text-center">
-                                    {!! cui_btn_delete(route('admin.pembimbingTA.show', [$pembimbingTA->id]), "Hapus?") !!}
+                                    {!! cui_btn_delete(route('admin.pembimbingTA.update', [$pembimbingTA->id]), "Yakin ingin membatalkan?") !!}
                                 </td>
                             </tr>
+
+                            
                         @endforeach
                         </tbody>
                     </table>
