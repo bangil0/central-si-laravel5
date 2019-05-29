@@ -44,9 +44,16 @@
 
                     <div class="form-group">
                         <label for="proposal_status"><strong>Status Proposal</strong></label>
-                        <p>{{$sempro->proposal_status}}</p>
+                        <br>
+                        @if($sempro->proposal_status == 1)
+                            SETUJU
+                        @elseif($sempro->proposal_status == 2)
+                            TIDAK SETUJU  
+                        @endif
+                        <!-- <p>{{$sempro->proposal_status}}</p> -->
                     </div>
 
+                    
                     <div class="form-group">
                         <label for="proposal_status"><strong>Nilai Huruf</strong></label>
                         <p>{{$sempro->nilai_huruf}}</p>
