@@ -158,7 +158,6 @@
                     </li> 
 
 
-<<<<<<< HEAD
             {{--  PENGELOLAAN PENELITIAN--}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.penelitian.index') }}">
@@ -205,8 +204,6 @@
                             <i class="nav-icon fas fa-book"></i> Publikasi Dosen
                         </a>
                     </li>
-=======
->>>>>>> a1e374236be80f9c7b85ab618ce29abd455f2ccf
         </ul>
     </nav>
 
