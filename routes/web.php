@@ -102,6 +102,7 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 
 
     /** Routing untuk tugas mulai dari sini */
+
     /** Pengelolaan Sempro */
 
     Route::get('/admin/sempro', 'SemproController@index')->name('admin.sempro.index');  //routing lihat daftar mahasiswa
@@ -238,6 +239,7 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 //     Route::post('/admin/penelitian-user/create', 'PenelitianUserController@store')->name('admin.penelitian-user.store'); //form tambah anggota
 //     Route::get('/admin/penelitian-user/create/{penelitian}', 'PenelitianUserController@create')->name('admin.penelitian-user.create'); //form tambah anggota
 //     Route::delete('/admin/penelitian-user/{penelitian}/{user}', 'PenelitianUserController@destroy')->name('admin.penelitian-user.destroy'); //hapus anggota
+
 
 
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
