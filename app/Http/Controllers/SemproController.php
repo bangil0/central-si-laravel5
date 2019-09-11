@@ -44,13 +44,7 @@ class SemproController extends Controller
       public function store(Request $request)
    {
 
-    $request->validate([
-     'tugas_akhir_id'=>'required',
-     'sempro_at'=>'required',
-     'sempro_time'=>'required',
-     'proposal_status'=>'required',
-     'file_proposal'=>'file|mimes:pdf'
-    ]);
+    
 
     $sempro = new TaSempro;
     $sempro->sempro_at = $request->input('sempro_at');
@@ -84,25 +78,20 @@ class SemproController extends Controller
     
    }
      
-     public function editnilai($id)
-    {
-        
+     public function editnilai($id){
         $sempros = TaSempro::
                         join('tugas_akhir','ta_sempro.tugas_akhir_id', '=','tugas_akhir.id')
                         ->join('mahasiswa','tugas_akhir.mahasiswa_id','=','mahasiswa.id')
-                        ->select('tugas_akhir.id as tugas_akhir_id','ta_sempro.id','mahasiswa.nama')
+                        ->select('tugas_akhir.id as tugas_akhir_id','ta_sempro.id','mahasiswa.nama', 'ta_sempro.nilai_huruf')
                         // ->pluck('nama');
                         ->where('ta_sempro.id', '=',$id)
                         ->get()[0];
     
-        
-     
-        return view('backend.sempro.editnilai', compact('sempros'));
+              return view('backend.sempro.editnilai', compact('sempros'));
     }
     
 
-       public function edit($id)
-    {
+    public function edit($id){
     	$tugas_akhir = TaSempro::
     					join('tugas_akhir','ta_sempro.tugas_akhir_id', '=','tugas_akhir.id')
     					->join('mahasiswa','tugas_akhir.mahasiswa_id','=','mahasiswa.id')
@@ -117,7 +106,7 @@ class SemproController extends Controller
      public function updateNilai(Request $request, $id){
         $sempros = TaSempro::where('id',$id)->first();
 
-        $sempros->nilai_huruf = $request->nilai_huruf;
+        $sempros->nilai_huruf = $request->input('nilai_huruf');
                 
             try {
 
@@ -139,7 +128,7 @@ class SemproController extends Controller
      'sempro_at'=>'required',
      'sempro_time'=>'required',
      'proposal_status'=>'required',
-     'file_proposal'=>'file|mimes:pdf'
+     // 'file|mimes:pdf'
     ]);
 
     $sempro = TaSempro::findOrFail($id);
@@ -149,7 +138,7 @@ class SemproController extends Controller
     $sempro->semhas_deadline_at = $request->input('semhas_deadline_at');
     $sempro->tugas_akhir_id = $request->input('tugas_akhir_id');
 
-    if($request->file('file_proposal')->isValid())
+    if($request->hasFile('file_proposal'))
     {
      $filename = uniqid('proposal-');
      $fileext = $request->file('file_proposal')->extension();

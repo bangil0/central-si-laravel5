@@ -45,8 +45,6 @@
 
                             <th class="text-center">Sempro At</th>
                             <th class="text-center">Sempro Time</th>
-                            <th class="text-center">Proposal Status</th>
-
                             <th class="text-center">Nilai Huruf</th>
                             <th class="text-center">Semhas Deadline</th>
                             <th class="text-center">Aksi</th>
@@ -59,7 +57,7 @@
                                 <td class="text-center">{{ $sempro->nama }}</td>
                                 <td class="text-center">{{ $sempro->sempro_at }}</td>
                                 <td class="text-center">{{ $sempro->sempro_time }}</td>
-                                <td class="text-center">{{ $sempro->proposal_status }}</td>
+<!--                                 <td class="text-center">{{ $sempro->proposal_status }}</td> -->
                                 <td class="text-center">{{ $sempro->nilai_huruf }}</td>
 
                                 <td class="text-center">{{ $sempro->semhas_deadline_at }}</td>
