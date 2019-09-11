@@ -20,4 +20,9 @@ class TaSempro extends Model
     }
 
 
+    public function semhass()
+    {
+    	return $this->hasMany(TaSemhas::class);	
+    }
+    
 }
