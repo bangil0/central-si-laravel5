@@ -25,7 +25,6 @@
 <div class="form-group">
     <label for="rekomendasi">Rekomendasi</label>
     {{ Form::select('rekomendasi', $rekomendasi, null, ['class' => 'form-control', 'id' => 'rekomendasi']) }}
-  
 </div>
 
 <div class="form-group">

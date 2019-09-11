@@ -1,8 +1,13 @@
 
+
 <div class="form-group">
     <label for="nama">Nama Mahasiswa</label>
     {{ Form::text('ta_sempro_id',$sempro[0]->id, ['class' => 'form-control','id' => 'nama', 'hidden' =>'hidden']) }}
     {{ Form::text('abc',$sempro[0]->nama, ['class' => 'form-control','id' => 'nama', 'readonly' =>'readonly']) }}
+</div>
+<div class="form-group">
+    <label for="nama">Nama Mahasiswa</label>
+    {{ Form::text('nama',$sempro[0]->nama, ['class' => 'form-control','id' => 'nama', 'readonly' =>'readonly']) }}
 </div>
 
 <div class="form-group">
@@ -51,7 +56,9 @@
      
               
       {{ Form::file('file_laporan_ta', null, ['class' => 'form-control', 'id' => 'file_laporan_ta']) }}
-    
-    
+
+    <label for="file_ba_seminar">File BA Seminar</label>
+    {{ Form::file('file_ba_seminar', null, ['class' => 'form-control', 'id' => 'file_ba_seminar']) }}
 </div>
+
 

@@ -49,7 +49,6 @@
                         <tbody>
                         @forelse($semhass as $semhas)
                             <tr>
-
                                 <td class="text-center">{{ $semhas->nama_mahasiswa }}</td>
                                 <td class="text-center">{{ $semhas->semhas_at }}</td>
                                 <td class="text-center">{{ $semhas->semhas_time }}</td>

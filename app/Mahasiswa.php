@@ -25,4 +25,8 @@ class Mahasiswa extends Model
         return $this->hasMany(TaPesertaSemhas::class);
     }
     // Tambahkan Kode yang diperlukan dibawah ini
+    public function pesertaSemhas()
+    {
+        return $this->hasMany(TaPesertaSemhas::class);
+    }
 }
