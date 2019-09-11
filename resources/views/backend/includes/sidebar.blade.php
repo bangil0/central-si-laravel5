@@ -158,7 +158,6 @@
                     </li> 
 
 
-<<<<<<< HEAD
             {{--  PENGELOLAAN PENELITIAN--}}
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.penelitian.index') }}">
@@ -206,7 +205,15 @@
                         </a>
                     </li>
 =======
->>>>>>> a1e374236be80f9c7b85ab618ce29abd455f2ccf
+               
+               {{-- Pengelolaan pembimbing TA--}}
+
+               <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.pembimbingTA.index') }}">
+                            <i class="nav-icon fas fa-book"></i> Pengelolaan Pembimbing TA
+                        </a>
+                    </li>
+>>>>>>> 7822edfb6a498ffd730ae928020925c6b429caae
         </ul>
     </nav>
 
