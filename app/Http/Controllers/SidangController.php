@@ -5,17 +5,13 @@ use App\Dosen;
 use App\TaSidang;
 use App\User;
 use Illuminate\Http\Request;
-
-use DB;
-use App\Mahasiswa;
-use App\TaPesertaSemhas;
-use App\TaSidang;
-use App\TaSemhas;
 use App\Ruangan;
 use App\Dosen;
-use App\TaPengujiSidang;
+use App\TaPengujiSidang;  
+use App\TaSemhas;
+use App\TaSidang;
 
-
+use DB;
 
 
 
@@ -28,6 +24,21 @@ class SidangController extends Controller
         'nik' => 'required',
     ];
     
+{
+    public $validasi = [
+        'ta_semhas_id' => 'required|numeric',
+        'status' => 'required|numeric',
+        'sidang_at' => 'date_format:Y-m-d|nullable',
+        'ruangan' => 'numeric|nullable',
+        'status' => 'numeric|nullable',
+        'nilai_angka' => 'numeric|nullable',
+        'nilai_toefl' => 'numeric|nullable',
+        'file_toefl' => 'file|nullable',
+        'file_laporan' => 'file|nullable',
+        'file_lembaran_pengesahan' => 'file|nullable',
+        'nilai_akhir_ta' => 'numeric|nullable'
+    ];
+
     public function index()
     {   
         $sidangtas = TaSidang::paginate(3);
@@ -58,159 +69,211 @@ class SidangController extends Controller
 
         return view('backend.sidang_ta.index', compact('taSidang'));
     }
-
+    
     public function create()
     {
-        // $semhas_db = DB::table('ta_peserta_semhas')
-        //             ->join('ta_semhas', 'ta_peserta_semhas.ta_semhas_id', '=', 'ta_semhas.id')
-        //             ->select('ta_peserta_semhas.*', 'ta_semhas.status', 'ta_semhas_id as check')->get();
-        // // $semhas = TaPesertaSemhas::all();
-        // $semhas =  $semhas_db->pluck('ta_semhas_id', 'check');
-        // dd($blin);
-        
-        $taSidang = DB::table('mahasiswa')
-                             ->join('tugas_akhir', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
-                             ->join('ta_sempro', 'ta_sempro.tugas_akhir_id', '=', 'tugas_akhir.id')
-                             ->join('ta_semhas', 'ta_semhas.ta_sempro_id', '=', 'ta_sempro.id')
-                             ->select('mahasiswa.id as id_mhs', 'mahasiswa.nama as nama_mhs', 'ta_semhas.id as semhas_id')
-                             ->get();
-        $mahasiswa =  $taSidang->pluck('nama_mhs', 'semhas_id');
-        // dd($mahasiswa);
-        $blin  = Ruangan::paginate(3);
-        $ruangan  = $blin->pluck('nama','id');
-        
-        // dd($ruangan);
-        return view('backend.sidang_ta.create', compact('mahasiswa', 'taSidang' , 'dosen', 'ruangan'));
+        $mahasiswa = TaSemhas::
+                    join('ta_sempro', 'ta_sempro.id', '=', 'ta_semhas.ta_sempro_id')
+                    ->join('tugas_akhir', 'tugas_akhir.id', '=', 'ta_sempro.tugas_akhir_id')
+                    ->join('mahasiswa', 'mahasiswa.id', '=', 'tugas_akhir.mahasiswa_id')
+                    ->where('ta_semhas.status', '=', 1)
+                    ->pluck('mahasiswa.nama', 'ta_semhas.id');
+        $ruangan  = Ruangan::pluck('nama','id');  
+
+        return view('backend.sidang_ta.create', compact('mahasiswa', 'ruangan'));
     }
 
-    public function store(Request $request ){
+    public function store(Request $request )
+    {
+        $this->validate($request, $this->validasi);
 
         $file_toefl = $request->file('file_toefl');
         $file_laporan = $request->file('file_laporan');
         $file_pengesahan = $request->file('file_lembaran_pengesahan');
-
+        
+        $sidang = new TaSidang;
         if ($file_toefl != null) {
-            $path_toefl = $file_toefl->store('public/files');
+            $nama = sha1(microtime()).'.'.$file_toefl->getClientOriginalExtension();
+            $path_toefl = $file_toefl->storeAs('public/files', $nama);
+            $sidang->file_toefl = $nama;
         }
 
         if ($file_laporan != null) {
-            $path_laporan = $file_laporan->store('public/files');
+            $nama = sha1(microtime(+1)).'.'.$file_laporan->getClientOriginalExtension();
+            $path_laporan = $file_laporan->storeAs('public/files', $nama);
+            $sidang->file_laporan = $nama;
         }
 
         if ($file_pengesahan != null) {
-            $file_pengesahan = $file_pengesahan->store('public/files');
+            $nama = sha1(microtime(+2)).'.'.$file_pengesahan->getClientOriginalExtension();
+            $path_pengesahan = $file_pengesahan->storeAs('public/files', $nama);
+            $sidang->file_lembaran_pengesahan = $nama;
         }
-
-        $sidang = new TaSidang;
-        
-        $sidang->ta_semhas_id = $request->input('ta_semhas');
+        $sidang->ta_semhas_id = $request->input('ta_semhas_id');
         $sidang->sidang_at = $request->input('sidang_at');
         $sidang->sidang_time = $request->input('sidang_time');
-        $sidang->ruangan_id = $request->input('ruangan');
+        $sidang->ruangan_id = $request->input('ruangan_id');
+        $sidang->nilai_angka = $request->input('nilai_angka');
+        $sidang->nilai_huruf = $request->input('nilai_huruf');
+        $sidang->nilai_toefl = $request->input('nilai_toefl');
+        $sidang->nilai_akhir_ta = $request->input('nilai_akhir_ta');
         $sidang->status = $request->input('status');
-        $sidang->file_toefl = $file_toefl;
-        $sidang->file_laporan = $file_laporan;
-        $sidang->file_lembaran_pengesahan = $file_pengesahan;
-
-
         $sidang->save();
+
+        session()->flash('flash_success', 'Berhasil menambahkan data sidang ta');
         return redirect('admin/sidang');
     } 
 
-    public function edit(TaSidang $taSidang){
-        $mhs_db = DB::table('mahasiswa')
-                             ->join('tugas_akhir', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
-                             ->join('ta_sempro', 'ta_sempro.tugas_akhir_id', '=', 'tugas_akhir.id')
-                             ->join('ta_semhas', 'ta_semhas.ta_sempro_id', '=', 'ta_sempro.id')
-                             ->select('mahasiswa.id as id_mhs', 'mahasiswa.nama as nama_mhs', 'ta_semhas.id as semhas_id')
-                             ->get();
-        $mahasiswa =  $mhs_db->pluck('nama_mhs', 'semhas_id');
-
-        $blin  = Ruangan::paginate(3);
-        $ruangan  = $blin->pluck('nama','id');
+    public function edit($id)
+    {
+        $mahasiswa = TaSemhas::
+                    join('ta_sempro', 'ta_sempro.id', '=', 'ta_semhas.ta_sempro_id')
+                    ->join('tugas_akhir', 'tugas_akhir.id', '=', 'ta_sempro.tugas_akhir_id')
+                    ->join('mahasiswa', 'mahasiswa.id', '=', 'tugas_akhir.mahasiswa_id')
+                    ->where('ta_semhas.status', '=', 1)
+                    ->pluck('mahasiswa.nama', 'ta_semhas.id');
+        $ruangan  = Ruangan::pluck('nama','id');
+        $taSidang = TaSidang::findOrFail($id);
 
         return view('backend.sidang_ta.edit', compact('mahasiswa', 'taSidang', 'ruangan'));
     }
 
-    public function update(Request $request, TaSidang $taSidang){
-        // dd($taSidang);
-        // $this->validate($request, $taSidang->id);
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, $this->validasi);
 
+        $sidang = TaSidang::findOrFail($id);
         $file_toefl = $request->file('file_toefl');
         $file_laporan = $request->file('file_laporan');
         $file_pengesahan = $request->file('file_lembaran_pengesahan');
 
         if ($file_toefl != null) {
-            // $path = Storage::putFile('avatars', $request->file('avatar'));
-            $path_toefl = $file_toefl->store('public/files');
+            $nama = sha1(microtime()).'.'.$file_toefl->getClientOriginalExtension();
+            $path_toefl = $file_toefl->storeAs('public/files', $nama);
+            $sidang->file_toefl = $nama;
         }
 
         if ($file_laporan != null) {
-            $path_laporan = $file_laporan->store('public/files');
+            $nama = sha1(microtime(+1)).'.'.$file_laporan->getClientOriginalExtension();
+            $path_laporan = $file_laporan->storeAs('public/files', $nama);
+            $sidang->file_laporan = $nama;
         }
 
         if ($file_pengesahan != null) {
-            $path_pengesahan = $file_pengesahan->store('public/files');
+            $nama = sha1(microtime(+2)).'.'.$file_pengesahan->getClientOriginalExtension();
+            $path_pengesahan = $file_pengesahan->storeAs('public/files', $nama);
+            $sidang->file_lembaran_pengesahan = $nama;
         }
-        
-        $taSidang->ta_semhas_id = $request->input('ta_semhas');
-        $taSidang->sidang_at = $request->input('sidang_at');
-        $taSidang->sidang_time = $request->input('sidang_time');
-        $taSidang->ruangan_id = $request->input('ruangan');
-        $taSidang->status = $request->input('status');
-        $taSidang->file_toefl = $file_toefl;
-        $taSidang->file_laporan = $file_laporan;
-        $taSidang->file_lembaran_pengesahan = $file_pengesahan;
-        $taSidang->save();
+
+        $sidang->ta_semhas_id = $request->input('ta_semhas_id');
+        $sidang->sidang_at = $request->input('sidang_at');
+        $sidang->sidang_time = $request->input('sidang_time');
+        $sidang->ruangan_id = $request->input('ruangan_id');
+        $sidang->nilai_angka = $request->input('nilai_angka');
+        $sidang->nilai_huruf = $request->input('nilai_huruf');
+        $sidang->nilai_toefl = $request->input('nilai_toefl');
+        $sidang->nilai_akhir_ta = $request->input('nilai_akhir_ta');
+        $sidang->status = $request->input('status');
+        $sidang->save();
             
-            return redirect('admin/sidang');
+        session()->flash('flash_success', 'Berhasil memperbaharui data sidang ta');
+        return redirect("/admin/sidang/$id/show");
     }
-    public $anggota_validation_rules = [
-        'dosen_id' => 'required',
-        'bidang_usulan' => 'required'
-    ];
+    
+    public function show($id)
+    {
+        $sidangta = TaSidang::
+                select('mahasiswa.nama as nama_mahasiswa', 
+                    'mahasiswa.nim', 'tugas_akhir.judul', 'ta_sidang.sidang_at', 
+                    'ta_sidang.sidang_time', 'ruangan.nama as nama_ruang', 'ta_sidang.nilai_angka',
+                    'ta_sidang.nilai_huruf', 'ta_sidang.nilai_toefl', 'ta_sidang.file_toefl', 
+                    'ta_sidang.file_laporan', 'ta_sidang.file_lembaran_pengesahan', 
+                    'ta_sidang.nilai_akhir_ta',
+                    DB::raw('(CASE 
+                    WHEN ta_sidang.status = 0 THEN "Diajukan"
+                    WHEN ta_sidang.status = 10 THEN "Pengajuan Diterima"
+                    WHEN ta_sidang.status = 11 THEN "Menunggu Sidang"
+                    WHEN ta_sidang.status = 12 THEN "Selesai"
+                    WHEN ta_sidang.status = 13 THEN "Batal"
+                    WHEN ta_sidang.status = 14 THEN "Gagal"
+                    WHEN ta_sidang.status = 20 THEN "Pengajuan Ditolak"
+                    END) AS status'))
+                ->join('ta_semhas', 'ta_sidang.ta_semhas_id', '=', 'ta_semhas.id')  
+                ->join('ta_sempro', 'ta_semhas.ta_sempro_id', '=', 'ta_sempro.id')
+                ->join('tugas_akhir', 'ta_sempro.tugas_akhir_id', '=', 'tugas_akhir.id')
+                ->join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
+                ->join('ruangan', 'ta_sidang.ruangan_id', '=', 'ruangan.id')        
+                ->findOrFail($id);
+        
+        $pengujis = DB::table('ta_penguji_sidang')
+                ->join('dosen', 'dosen.id', '=', 'ta_penguji_sidang.dosen_id')
+                ->join('ta_sidang', 'ta_sidang.id', '=', 'ta_penguji_sidang.ta_sidang_id')
+                ->select('dosen.nama', 'ta_penguji_sidang.id', 
+                    DB::raw('(CASE 
+                    WHEN ta_penguji_sidang.jabatan = 0 THEN "Ketua Sidang"
+                    WHEN ta_penguji_sidang.jabatan = 1 THEN "Anggota Sidang"
+                    END) AS jabatan'),
+                    DB::raw('(CASE 
+                    WHEN ta_penguji_sidang.bersedia = 1 THEN "Bersedia"
+                    WHEN ta_penguji_sidang.bersedia = 0 THEN "Tidak Bersedia"
+                    END) AS bersedia'))
+                ->where('ta_penguji_sidang.ta_sidang_id', '=', $id)
+                ->orderBy('jabatan', 'desc')
+                ->get();
+                
+        return view('backend.sidang_ta.show', compact('sidangta', 'pengujis', 'id'));
+    }
+    
+    public function destroy($id)
+    {
+        $sidangtas = TaPengujiSidang::where('ta_sidang_id', $id);
+        $sidangtas->delete();
+
+        $sidangta = TaSidang::find($id);
+        $sidangta->delete();
+        
+        session()->flash('flash_success', 'Berhasil menghapus data sidang ta dengan id '.$sidangta->id);
+        return redirect()->route('admin.sidang_ta.index');
+    }
+
     public function add($id)
     {
-        $UJ = TaPengujiSidang::findOrFail($id);
-        $ds = Dosen::pluck('nama', 'id');
-        return view('backend.sidang_ta.add', compact('ds','UJ'));
+        $dosen = Dosen::pluck('nama', 'id');
+        
+        return view('backend.sidang_ta.penguji', compact('dosen', 'id'));
     }
 
     public function insert(Request $request)
     {
-        $this->validate($request, $this->anggota_validation_rules);
-        $data = $request->all();
-        TaPengujiSidang::create($data);
-        session()->flash('flash_success', 'Berhasil menambahkan data Penguji Sidang');
-        return redirect()->route('admin.sidang_ta.showkelompok',$request->sidang_ta_id);
-        return view('backend.sidang_ta.index');
+        $id = $request->input('ta_sidang_id');
+        $data = TaPengujiSidang::get()
+                ->where('ta_sidang_id', $id)
+                ->where('jabatan', 0)
+                ->where('bersedia', 1);
 
-=======
-        return view('backend.sidangta.create');
+        if($request->input('jabatan') == 0){
+            if(!($data->isEmpty())){
+                session()->flash('flash_warning', 'Ketua sidang sudah ada');
+                return redirect()->route('admin.sidang_ta.show', [$request->ta_sidang_id]);
+            } 
+        }
+
+        $penguji = new TaPengujiSidang;
+        $penguji->ta_sidang_id = $request->input('ta_sidang_id');
+        $penguji->dosen_id = $request->input('dosen_id');
+        $penguji->jabatan = $request->input('jabatan');
+        $penguji->bersedia = $request->input('bersedia');
+        session()->flash('flash_success', 'Berhasil menambahkan penguji sidang');
+        $penguji->save();   
+        
+        return redirect()->route('admin.sidang_ta.show', [$request->ta_sidang_id]);
     }
-    public function store(Request $request)
+
+    public function destroydosen($id)
     {
-        $this->validate($request, $this->validation_rules);
-
-        $user = User::create([
-            'username' => request('nip'),
-            'email' => request('email'),
-            'password' => bcrypt('nip'),
-            'status' => 1,
-            'type' => User::MAHASISWA
-        ]);
-
-        $user->mahasiswa()->create($request->only(
-            'ta_semhas_id',
-            'sidang_at',
-            'sidang_time',
-            'ruangan_id',
-            'status',
-            'nilai_angka',
-            'nilai_huruf'));
-
-        session()->flash('flash_success', 'Berhasil menambahkan data sidang pada tanggal'. $request->input('sidang_at'));
-        return redirect()->route('admin.sidang_ta.show', [$user->id]);
->>>>>>> dioharvandy_1711522004
+        $user = TaPengujiSidang::findOrFail($id);
+        $user->delete();
+        session()->flash('flash_success', 'Berhasil menghapus data dosen'.$user->id);
+        return redirect()->back();
     }
 }

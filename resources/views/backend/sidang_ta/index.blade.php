@@ -21,7 +21,7 @@
 @endsection
 
 @section('content')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center">    
         <div class="col">
             <div class="card">
 
@@ -33,8 +33,9 @@
                 {{-- CARD BODY--}}
                 <div class="card-body">
 
-
-
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 text-right">
+                        </div>
                         <div class="col-md-6 justify-content-end">
                             <div class="row justify-content-end">
                                 {{ $sidangtas->links() }}
@@ -47,14 +48,10 @@
 
                         <tr>
 
-                            <th>Nama mahasiswa</th>
-                            <th class="text-center">Tanggal Sidang TA</th>
+                            <th class="text-center">Nama Mahasiswa</th>
+                            <th class="text-center">NIM</th>
                             <th class="text-center">Ruangan</th>
-
-                            <th class="text-center">ID</th>
-                            <th class="text-center">Tanggal</th>
-                            <th class="text-center">Waktu</th>
-
+                            <th class="text-center">Tanggal Sidang TA</th>
                             <th class="text-center">Aksi</th>
                         </tr>
                         </thead>
@@ -62,13 +59,15 @@
 
                           @foreach($taSidang as $taSidang)                             
                                 <tr>
-                                    <td class="text-center">{{$taSidang->nama_mhs}}</td>
+                                    <td>{{$taSidang->nama_mahasiswa}}</td>
+                                    <td class="text-center">{{$taSidang->nim}}</td>
+                                    <td class="text-center">{{$taSidang->nama_ruang}}</td>
                                     <td class="text-center">{{$taSidang->sidang_at}}</td>
-                                    <td class="text-center">{{$taSidang->nama_ruangan}}</td>
                                     <td class="text-center">
-                                         {{-- {!! cui_btn_view(route('admin.sidang_ta.show', [$mahasiswa->id])) !!} --}}
+                                         {!! cui_btn_view(route('admin.sidang_ta.show', [$taSidang->id])) !!}
                                         {!! cui_btn_edit(route('admin.sidang_ta.edit', [$taSidang->id])) !!}
-                                        {{-- {!! cui_btn_delete(route('admin.sidang_ta.destroy', [$mahasiswa->id]), "Anda yakin akan menghapus data dosen ini?") !!}  --}}
+                                        {!! cui_btn_delete(route('admin.sidang_ta.destroy', [$taSidang->id]), "Anda yakin akan menghapus data sidang TA ini?") !!}  
+                                        
                                     </td>
                                 </tr>
                          @endforeach  
