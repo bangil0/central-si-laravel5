@@ -4,6 +4,7 @@ use App\TaSemhas;
 use App\Ruangan;
 use App\TaSempro;
 use DB;
+use Exception;
 use Illuminate\Http\Request;
 class SemhasController extends Controller
 {
@@ -14,7 +15,7 @@ class SemhasController extends Controller
                    ->join('ta_sempro', 'ta_semhas.ta_sempro_id', '=' , 'ta_sempro.id')
                    ->join('tugas_akhir','ta_sempro.tugas_akhir_id', '=', 'tugas_akhir.id')
                    ->join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
-                   ->select('ta_semhas.id','ta_semhas.semhas_at','ta_semhas.semhas_time','ruangan.nama','ta_sempro.id','mahasiswa.nama as nama_mahasiswa')
+                   ->select('ta_semhas.id as semhas_id','ta_semhas.semhas_at','ta_semhas.semhas_time','ruangan.nama','ta_sempro.id as sempro_id','mahasiswa.nama as nama_mahasiswa')
                    ->paginate(25);
         
         return view('backend.semhas.index', compact('semhass'));
@@ -130,7 +131,21 @@ class SemhasController extends Controller
                 $filenameext = $filename.'.'.$fileext;
                 $filepath = $request->file_ba_seminar->storeAs('/ba_seminar',$filenameext);
                 $semhas->file_ba_seminar = $filepath;
-            }
+            
+          }
+
+                        else
+                        {
+                            $semhas->save();
+                       
+                       }
+                        
+                      }
+                       if(empty($semhass->file_laporan_ta))
+                       {
+                          
+ 
+
             if($request->file('file_laporan_ta')->isValid())
             {
                 //hapus file, jika sebelumnya sudah ada
@@ -147,12 +162,59 @@ class SemhasController extends Controller
                 $filepath = $request->file_laporan_ta->storeAs('/laporan_ta',$filenameext);
                 $semhas->file_laporan_ta = $filepath;
             }
-             if ($semhas->save()) {
+      
+      else
+      {$semhas->save();
+      }
+    }
+
+           if ($semhas->save()) {
+
                 session()->flash('flash_success','Berhasil memperbaharui data semhas');
              //redirect kehalaman detail
                  return redirect()->route('admin.semhas.show', [$semhas->id]);
             }
             return redirect()->route('admin.semhas.show');
+    }
+    public function show($id)
+    {
+         $semhas = DB::table('ta_semhas')
+                ->join('ruangan', 'ta_semhas.ruangan_id', '=', 'ruangan.id')
+                ->join('ta_sempro', 'ta_semhas.ta_sempro_id', '=' , 'ta_sempro.id')
+                ->join('tugas_akhir','ta_sempro.tugas_akhir_id', '=', 'tugas_akhir.id')
+                ->join('mahasiswa', 'tugas_akhir.mahasiswa_id', '=', 'mahasiswa.id')
+           
+                ->select('ta_sempro.id','mahasiswa.nama','ta_semhas.semhas_at','ta_semhas.semhas_time','ta_semhas.status','ta_semhas.rekomendasi','ta_semhas.sidang_deadline_at','ta_semhas.file_ba_seminar','ta_semhas.file_laporan_ta','ruangan.nama AS ruangan_nama','rekomendasi', DB::raw('(CASE WHEN rekomendasi = 1 THEN '. "'Mengulang Seminar'" .'WHEN rekomendasi = 2 THEN '. "'Lanjut Sidang dengan Revisi'".'WHEN rekomendasi = 3 THEN '."'Lanjut Sidang Tanpa Revisi'".'END) AS rekomendasi_semhas'), 'status', DB::raw('(CASE WHEN status = 1 THEN '. "'Sudah Terlaksana'" .'END) AS status_semhas'))
+                 ->where('ta_semhas.id',$id)
+                ->first();
+           // $file = \Storage::url($semhas->file_ba_seminar);
+          // $file_lap
+
+
+        return view('backend.semhas.show', compact('semhas','ruangan'));
+    }
+    public function destroy($id)
+    {
+         $semhas = TaSemhas::findOrFail($id);
+        try{
+            TaSemhas::destroy($id);
+            session()->flash('flash_success', 'Berhasil menghapus data semhas');g
+        } catch(Exception $e){
+            session()->flash('flash_warning', 'Gagal Menghapus data semhas karena masih ada peserta semhas atau penguji semhas yang terdaftar');
+        }
+        return redirect()->route('admin.semhas.index');
+    }
+    // public function getDownload($type,$ikan,$file_id)
+    // {
+    //   $lokasi = null;
+    //   if ($type == 'dokumen') {
+    //     $lokasi= 'ba_seminar';
+    //   }
+    //   return response()->file(storage_path('app/'.$lokasi.'/'.$file_id));
+    // }
+    
+} 
+
     }
     public function show($id)
     {
@@ -186,3 +248,4 @@ class SemhasController extends Controller
     }
     
 } 
+

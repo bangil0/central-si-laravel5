@@ -54,10 +54,10 @@
                                 <td class="text-center">{{ $semhas->semhas_time }}</td>
                                 <td class="text-center">{{ $semhas->nama }}</td>
                                 <td class="text-center">
-                                    {!! cui_btn_view(route('admin.semhas.show', [$semhas->id])) !!}
-                                    {!! cui_btn_edit(route('admin.semhas.edit', [$semhas->id])) !!}
-                                    {!! cui_btn_delete(route('admin.semhas.destroy', [$semhas->id]), "Anda yakin akan menghapus data semhas ini?") !!}
-                                    {!! cui_btn(route('admin.pesertasemhas.index', [$semhas->id]), 'icon-people','Peserta') !!}
+                                    {!! cui_btn_view(route('admin.semhas.show', [$semhas->semhas_id])) !!}
+                                    {!! cui_btn_edit(route('admin.semhas.edit', [$semhas->semhas_id])) !!}
+                                    {!! cui_btn_delete(route('admin.semhas.destroy', [$semhas->semhas_id]), "Anda yakin akan menghapus data semhas ini?") !!}
+                                      {!! cui_btn(route('admin.pesertasemhas.index', [$semhas->semhas_id]),'icon-people','Peserta') !!}
                                 
                                 </td>
                             </tr>

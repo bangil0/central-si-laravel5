@@ -27,8 +27,6 @@
                 {{-- CARD BODY--}}
                 <div class="card-body">
                    
-                      
-                    
 
                     {{ Form::model($semhass, []) }}
 
@@ -65,16 +63,22 @@
                     <div class="form-group">
                         <label for="file_ba_seminar"><strong>File Ba Seminar</strong></label>
                         {{ Form::text('file_ba_seminar', null, ['class' => 'form-control-plaintext', 'id' => 'file_ba_seminar', 'readonly' => 'readonly']) }}
+                         <a href="{{url('../storage/app/')}}/{{$semhas->file_ba_seminar}}" download="">Download</a>
+
                     </div>
                     <div class="form-group">
                         <label for="file_laporan_ta"><strong>File Laporan TA</strong></label>
                         {{ Form::text('file_laporan_ta', null, ['class' => 'form-control-plaintext', 'id' => 'file_laporan_ta', 'readonly' => 'readonly']) }}
+                         <a href="{{url('../storage/app/')}}/{{$semhas->file_laporan_ta}}" download="">Download</a>
+
                     </div>
                     
                     
 
                    
                     {{ Form::close() }}
+                   <!--  <a href="{{url('/admin/semhas/dokumen')}}/{{$semhas->file_ba_seminar}}" download="">Download</a> -->
+
 
                 </div>
 
