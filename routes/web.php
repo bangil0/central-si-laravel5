@@ -103,6 +103,15 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 
     /** Routing untuk tugas mulai dari sini */
 
+    // Routing sidang TA
+    Route::get('/admin/sidang_ta', 'SidangController@index')->name('admin.sidang_ta.index');
+    Route::post('/admin/sidang_ta', 'SidangController@store')->name('admin.sidang_ta.store'); //routing simpan data sidangta baru
+    Route::get('/admin/sidang_ta/create', 'SidangController@create')->name('admin.sidang_ta.create'); //routing tampilkan form data sidangta baru
+    Route::delete('/admin/sidang_ta/{sidangta}', 'SidangController@destroy')->name('admin.sidang_ta.destroy'); //routing hapus data sidangta baru
+    Route::patch('/admin/sidang_ta/{sidangta}', 'SidangController@update')->name('admin.sidang_ta.update'); //routing simpan perubahan data sidangta
+
+    Route::get('/admin/sidang_ta/{sidangta}', 'SidangtaController@show')->name('admin.sidang_ta.show'); //routing tampilkan detail sidangta
+    Route::get('/admin/sidang_ta/{sidangta}/edit', 'SidangtaController@edit')->name('admin.sidang_ta.edit');  //routing tampilkan form edit sidangta
     /** Publikasi dosen*/
     Route::get('/admin/publikasi/create', 'PublikasiController@create')->name('admin.publikasi.create'); 
     Route::delete('/admin/publikasi/{publikasi}', 'PublikasiController@destroy')->name('admin.publikasi.destroy'); 
@@ -215,6 +224,7 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 //     Route::post('/admin/penelitian-user/create', 'PenelitianUserController@store')->name('admin.penelitian-user.store'); //form tambah anggota
 //     Route::get('/admin/penelitian-user/create/{penelitian}', 'PenelitianUserController@create')->name('admin.penelitian-user.create'); //form tambah anggota
 //     Route::delete('/admin/penelitian-user/{penelitian}/{user}', 'PenelitianUserController@destroy')->name('admin.penelitian-user.destroy'); //hapus anggota
+
 
 
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
