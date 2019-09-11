@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaSemhas extends Model
 {
     protected $table = 'ta_semhas';
+    protected $primaryKey='id';
     protected $guarded = [];
 
     // Tambahkan Kode yang diperlukan dibawah ini
@@ -31,5 +32,15 @@ class TaSemhas extends Model
     public function peserta_semhas()
     {
         return $this->hasOne(TaPesertaSemhas::class,'ta_semhas_id','id');
+    }
+    
+    public function taPesertaSemhas()
+    {
+        return $this->hasMany(TaPesertaSemhas::class, 'ta_semhas_id');
+    }
+
+    public function taSidang()
+    {
+        return $this->hasOne(TaSidang::class, 'ta_semhas_id');
     }
 }

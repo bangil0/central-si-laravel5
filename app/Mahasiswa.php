@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Mahasiswa extends Model
 {
     protected $table='mahasiswa';
+    protected $primaryKey='id';
     protected $guarded = [];
     protected $dates = ['tanggal_lahir'];
     public $incrementing = false;
