@@ -204,6 +204,14 @@
                             <i class="nav-icon fas fa-book"></i> Publikasi Dosen
                         </a>
                     </li>
+               
+               {{-- Pengelolaan pembimbing TA--}}
+
+               <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.pembimbingTA.index') }}">
+                            <i class="nav-icon fas fa-book"></i> Pengelolaan Pembimbing TA
+                        </a>
+                    </li>
         </ul>
     </nav>
 
