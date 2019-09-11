@@ -9,11 +9,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'HomeController@index')->name('home');
 
 
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
+    Route::middleware(['auth'])->group( function(){
+    Route::get('/home', 'HomeController@index')->name('admin.home');
+
     Route::get('/admin/home', 'HomeController@index')->name('admin.home');
     Route::get('/admin/dashboard', 'DashboardController@index')->name('admin.dashboard');
     /** Routing Pengelolaan Dosen */
@@ -119,6 +123,25 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 
 
     // Routing sidang TA
+ 
+
+
+    Route::get('/admin/sidang', 'SidangController@index')->name('admin.sidang_ta.index');
+    Route::get('/admin/sidang/create', 'SidangController@create')->name('admin.sidang_ta.create');
+    Route::post('/admin/sidang/store', 'SidangController@store')->name('admin.sidang_ta.store');
+    Route::get('/admin/sidang/{taSidang}/edit', 'SidangController@edit')->name('admin.sidang_ta.edit');
+    Route::patch('/admin/sidang/{taSidang}', 'SidangController@update')->name('admin.sidang_ta.update');
+
+
+    Route::get('/admin/sidang', 'SidangController@index')->name('admin.sidang.index');
+
+    Route::get('/admin/sidang-ta', 'SidangTaController@index')->name('admin.sidang.index');
+    Route::get('/admin/sidang-ta/{id}', 'SidangTaController@show')->name('admin.sidangta.show');
+    Route::delete('/admin/sidang-ta/{sidangta}', 'SidangTaControllerTa@destroy')->name('admin.sidangta.destroy');
+
+
+
+
     Route::get('/admin/sidang_ta', 'SidangController@index')->name('admin.sidang_ta.index');
     Route::post('/admin/sidang_ta', 'SidangController@store')->name('admin.sidang_ta.store'); //routing simpan data sidangta baru
     Route::get('/admin/sidang_ta/create', 'SidangController@create')->name('admin.sidang_ta.create'); //routing tampilkan form data sidangta baru
@@ -242,6 +265,10 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 
 
 
+    Route::post('/admin/sidang_ta/member', 'SidangController@insert')->name('admin.sidang_ta.insert'); //roting simpan data sidang baru
+    Route::get('/admin/proposal-kp/{id}/add', 'SidangController@add')->name('admin.sidang_ta.add'); //routing menampilkan form tambah penguji sidang
+
+
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
     Route::post('pembimbing/submit', 'PembimbingSubmissionController@store')->name('admin.pembimbing.store');
 
@@ -298,16 +325,15 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
     Route::get('/admin/tendik/{tendik}/edit', 'TendikController@edit')->name('admin.tendik.edit');  //routing tampilkan form edit tendik
 });
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth/login');
 });
 Auth::routes();
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     //Laravel Permission spatie/permissions
     Route::resource('permissions', 'Backend\PermissionsController');
-    Route::post('permissions_mass_destroy', ['uses' => 'Backend\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
+    // Route::post('permissions_mass_destroy', ['uses' => 'Backend\PermissionsController@massDestroy', 'as' => 'permissions.mass_destroy']);
     Route::resource('roles', 'Backend\RolesController');
     Route::post('roles_mass_destroy', ['uses' => 'Backend\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
     Route::resource('users', 'Backend\UsersController');
-    Route::post('users_mass_destroy', ['uses' => 'Backend\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
+    // Route::post('users_mass_destroy', ['uses' => 'Backend\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
 });
-

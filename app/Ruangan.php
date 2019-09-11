@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ruangan extends Model
 {
     protected $table = 'ruangan';
+    protected $primaryKey='id';
     protected $guarded = [];
     public $timestamps = false;
 
@@ -14,5 +15,9 @@ class Ruangan extends Model
     public function ruangans()
     {
         return $this->hasMany(TaSemhas::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(TaSidang::class, 'ruangan_id');
     }
 }
