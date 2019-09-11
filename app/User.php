@@ -49,7 +49,7 @@ class User extends Authenticatable
         return $this->hasOne(Tendik::class, 'id');
     }
 
-    public function getNamaAttribute($key)
+    public function getNameAttribute($key)
     {
         switch ($this->type){
             case User::MAHASISWA:
