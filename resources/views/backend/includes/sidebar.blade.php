@@ -167,6 +167,11 @@
 
 
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.sempro.index') }}">
+                    <i class="nav-icon fas fa-book"></i> Pengelolaan Sempro</a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.prestasi-mhs.index') }}">
                     <i class="nav-icon fas fa-minus"></i> Prestasi Mahasiswa
                 </a>

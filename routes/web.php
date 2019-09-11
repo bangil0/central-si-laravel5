@@ -102,6 +102,20 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 
 
     /** Routing untuk tugas mulai dari sini */
+    /** Pengelolaan Sempro */
+
+    Route::get('/admin/sempro', 'SemproController@index')->name('admin.sempro.index');  //routing lihat daftar mahasiswa
+    Route::post('/admin/sempro', 'SemproController@store')->name('admin.sempro.store'); //routing simpan data mahasiswa baru
+    Route::get('/admin/sempro/create', 'SemproController@create')->name('admin.sempro.create'); //routing tampilkan form data mahasiswa baru
+    Route::delete('/admin/sempro/{sempro}', 'SemproController@destroy')->name('admin.sempro.destroy'); //routing hapus data mahasiswa baru
+    Route::patch('/admin/sempro/{id}', 'SemproController@update')->name('admin.sempro.update'); //routing simpan perubahan data mahasiswa
+    Route::patch('/admin/update/{sempro}', 'SemproController@updateNilai')->name('admin.sempro.nilai'); //routing simpan perubahan data mahasiswa
+    Route::get('/admin/sempro/{sempro}', 'SemproController@show')->name('admin.sempro.show'); //routing tampilkan detail mahasiswa
+    Route::get('/admin/sempro/{sempro}/edit', 'SemproController@edit')->name('admin.sempro.edit');  //routing tampilkan form edit mahasiswa
+    Route::get('/admin/sempro/{id}', 'SemproController@index')->name('admin.nilaisempro.index');  //routing lihat daftar mahasiswa
+    Route::get('/admin/sempro/{sempro}/editnilai', 'SemproController@editnilai')->name('admin.sempro.editnilai');  //routing tampilkan form edit mahasiswa
+    
+
 
     // Routing sidang TA
     Route::get('/admin/sidang_ta', 'SidangController@index')->name('admin.sidang_ta.index');
@@ -226,7 +240,6 @@ Route::post('/admin/mahasiswa/cari', 'pengabdiancariController@show')->name('adm
 //     Route::delete('/admin/penelitian-user/{penelitian}/{user}', 'PenelitianUserController@destroy')->name('admin.penelitian-user.destroy'); //hapus anggota
 
 
-
     Route::get('pembimbing/submit', 'PembimbingSubmissionController@create')->name('admin.pembimbing.create');
     Route::post('pembimbing/submit', 'PembimbingSubmissionController@store')->name('admin.pembimbing.store');
 
@@ -295,3 +308,4 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('users', 'Backend\UsersController');
     Route::post('users_mass_destroy', ['uses' => 'Backend\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
 });
+
